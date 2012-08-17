@@ -8,10 +8,18 @@ h1 a {
     color: inherit;
 }
 
+p {
+    margin: 0px;
+}
+
 .pledge, .reminder {
     font-weight: 900;
     font-size: 18pt;
     text-align: center;
+}
+
+.reminder {
+    margin-top: 25px;
 }
 
 input[type=text], input[type=submit] {
