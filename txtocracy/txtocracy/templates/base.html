@@ -1,0 +1,29 @@
+{% extends "html5hd-base.html" %}
+
+{% load url from future %}
+
+{% block title %}Txtocracy{% endblock title %}
+
+{% block viewport %}
+<meta name="viewport" content="width=600">
+{% endblock%}
+
+{% block default_css %}
+<link rel="stylesheet" href="{{ STATIC_URL }}css/default.css">
+{% endblock default_css%}
+
+{% block head_css %}
+<link rel="stylesheet" href="{{ STATIC_URL }}css/txtocracy.css" />    
+{% endblock %}
+
+{% block header %}
+<div class="grid_7 title_block alpha">
+  <h1><a href="{% url "home" %}">Txtocracy</a></h1>
+</div>
+{% endblock header %}
+
+{% block footer %}
+<div class="grid_4 alpha">
+    Footer stuff
+</div>
+{% endblock footer %}

@@ -118,11 +118,14 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.admin',
+    
     'viscountrapid',
     'robots',
     'raven.contrib.django',
     'south',
-    'txtocracy'
+    
+    'txtocracy',
+    'pledge'
 )
 
 DEVELOPMENT = False

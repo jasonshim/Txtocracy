@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block contents %}
+<form method="post">
+    {% csrf_token %}
+<div class="pledge">
+    <p>I, {{ form.name }} pledge to vote</p>
+    <p>on {{ election.date|date }}</p>
+    <p>in the {{ election.name }}</p>
+</div>
+
+<div class="reminder">
+    <p>+1 ({{ form.areacode }}) {{ form.phone_number }}</p>
+    <p><input type="submit" value="Remind Me"/></p>
+</div>
+</form>
+{% endblock contents %}

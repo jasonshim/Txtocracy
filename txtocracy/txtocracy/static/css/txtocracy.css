@@ -1,0 +1,21 @@
+.container_16 {
+    width: 550px;
+    margin: auto;
+}
+
+h1 a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.pledge, .reminder {
+    font-weight: 900;
+    font-size: 18pt;
+    text-align: center;
+}
+
+input[type=text], input[type=submit] {
+    font-family: serif;
+    font-weight: 900;
+    font-size: 18pt;
+}
