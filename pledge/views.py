@@ -6,6 +6,12 @@ from pledge.forms import PledgeForm
 def home(request, template="home.html"):
     return redirect("pledge", 2012, "ontario")
 
+def election(request, year, slug, template="election.html"):
+    election = get_object_or_404(Election, date__year=year, slug=slug)
+    return render(request,
+                  template,
+                  dict(election=election))
+
 def pledge(request, year, slug, template="pledge.html"):
     election = get_object_or_404(Election, date__year=year, slug=slug)
     
@@ -16,6 +22,7 @@ def pledge(request, year, slug, template="pledge.html"):
             pledge.ip = request.META["REMOTE_ADDR"]
             pledge.election = election
             pledge.save()
+            return redirect("election", year, slug)
     else:
         form = PledgeForm()
     

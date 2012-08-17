@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+
+{% load markup %}
+
+{% block contents %}
+{{ election.information|markdown }}
+{% endblock contents %}
