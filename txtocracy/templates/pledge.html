@@ -4,14 +4,24 @@
 <form method="post">
     {% csrf_token %}
 <div class="pledge">
-    <p>I, {{ form.name }} pledge to vote</p>
-    <p>on {{ election.date|date }}</p>
-    <p>in the {{ election.name }}</p>
-</div>
-
-<div class="reminder">
-    <p>+1 ({{ form.areacode }}) {{ form.phone_number }}</p>
-    <p><input type="submit" value="Remind Me"/></p>
+    <h2>Remind me to vote</h2>
+    <p>Need a friendly reminder to vote? Enter your name and mobile number and we will remind you on voting day.</p>
+    <dl>
+        <dt>Name</dt>
+        <dd>{{ form.name }}</dd>
+    </dl>
+    <dl>
+        <dt>Mobile No.</dt>
+        <dd>+1 ({{ form.areacode }}) {{ form.phone_number }}</dd>
+    </dl>
+    <dl>
+        <dt></dt>
+        <dd><input type="submit" value="Remind Me to Vote"/></dd>
+    </dl>
 </div>
 </form>
+<div>
+    <h2>Why Vote</h2>
+    <p>Cotent</p>
+</div>
 {% endblock contents %}

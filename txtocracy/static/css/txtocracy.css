@@ -1,29 +1,45 @@
+body {
+    font-family: sans-serif;
+}
+
 .container_16 {
-    width: 550px;
+    width: 640px;
     margin: auto;
+}
+
+h1 {
+    background-image: url(../img/txtocracy_temp.png);
+    height: 120px;
+    padding: 5px;
+    
 }
 
 h1 a {
     text-decoration: none;
     color: inherit;
+    text-shadow: 0px 0px 8px #CCC;
 }
 
 p {
     margin: 0px;
 }
 
-.pledge, .reminder {
-    font-weight: 900;
-    font-size: 18pt;
-    text-align: center;
+.pledge {
+    font-size: 12pt;
 }
 
-.reminder {
-    margin-top: 25px;
+dt {
+    float: left;
+    width: 100px;
+    text-align: right;
+    padding-top: 6px;
+}
+
+dd {
+    margin-left: 120px;
 }
 
 input[type=text], input[type=submit] {
-    font-family: serif;
     font-weight: 900;
-    font-size: 18pt;
+    font-size: 12pt;
 }
