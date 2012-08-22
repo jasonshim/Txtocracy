@@ -1,27 +1,38 @@
 {% extends "base.html" %}
 
 {% block contents %}
-<form method="post">
-    {% csrf_token %}
+<div class=hero_image>
+    <img src="{{ STATIC_URL }}img/mobile.png" alt="SMS messaging on mobile phones"/>
+</div>
+
 <div class="pledge">
-    <h2>Remind me to vote</h2>
-    <p>Need a friendly reminder to vote? Enter your name and mobile number and we will remind you on voting day.</p>
+    <form method="post">
+    {% csrf_token %}
+    <h1>TXTOCRACY</h1>
     <dl>
         <dt>Name</dt>
         <dd>{{ form.name }}</dd>
     </dl>
     <dl>
-        <dt>Mobile No.</dt>
+        <dt>Mobile</dt>
         <dd>+1 ({{ form.areacode }}) {{ form.phone_number }}</dd>
     </dl>
     <dl>
         <dt></dt>
-        <dd><input type="submit" value="Remind Me to Vote"/></dd>
+        <dd><input class="btn btn-success" type="submit" value="Remind Me to Vote"/></dd>
     </dl>
+    
+    <p>Once you pledge, we will send you a friendly reminder on voting day!</p>
+    
+    </form>
 </div>
-</form>
-<div>
-    <h2>Why Vote</h2>
-    <p>Cotent</p>
-</div>
+
+<div class="clearfix"></div>
 {% endblock contents %}
+
+{% block footer %}
+<div class="grid_4 alpha">
+    <p>"I, THE UNDERSIGNED, PLEDGE TO VOTE ON SEPTEMBER 6TH, 2012."</p>
+    <p class="signed">- Jason Shim</p>
+</div>
+{% endblock footer %}
