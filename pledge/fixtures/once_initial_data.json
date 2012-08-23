@@ -1,0 +1,12 @@
+[
+    {
+        "pk": 1,
+        "model": "pledge.election",
+        "fields": {
+            "date": "2012-09-06",
+            "information": "",
+            "name": "Ontario By-Election",
+            "slug": "ontario"
+        }
+    }
+]
