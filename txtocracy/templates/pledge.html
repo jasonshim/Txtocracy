@@ -11,11 +11,18 @@
     <h1>TXTOCRACY</h1>
     <dl>
         <dt>Name</dt>
-        <dd>{{ form.name }}</dd>
+        <dd>
+            {{ form.name }}
+            {{ form.name.errors }}
+        </dd>
     </dl>
     <dl>
         <dt>Mobile</dt>
-        <dd>+1 ({{ form.areacode }}) {{ form.phone_number }}</dd>
+        <dd>
+            +1 ({{ form.areacode }}) {{ form.phone_number }}
+            {{ form.areacode.errors }}
+            {{ form.phone_number.errors }}
+        </dd>
     </dl>
     <dl>
         <dt></dt>
