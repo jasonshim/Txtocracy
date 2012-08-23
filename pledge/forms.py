@@ -3,8 +3,9 @@ from django import forms
 from pledge.models import Pledge
 
 class PledgeForm(forms.ModelForm):
-    areacode = forms.CharField(required=True, widget=forms.TextInput(attrs={"size":3}))
-    phone_number = forms.CharField(required=True, widget=forms.TextInput(attrs={"size":7}))
+    name = forms.CharField(required=True, widget=forms.TextInput(attrs={"style": "width: 167px"}))
+    areacode = forms.CharField(required=True, widget=forms.TextInput(attrs={"style":"width: 35px"}))
+    phone_number = forms.CharField(required=True, widget=forms.TextInput(attrs={"style":"width: 89px"}))
     class Meta:
         model = Pledge
         fields = ("name", "areacode", "phone_number")
