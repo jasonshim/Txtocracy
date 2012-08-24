@@ -6,6 +6,7 @@
 
 {% block viewport %}
 <meta name="viewport" content="width=680">
+<meta name="google-site-verification" content="ONCoTnC3DqZDl8FggIFzXxdg2VEqN2G6TlnvsZwrBQM" /> 
 {% endblock%}
 
 {% block default_css %}
@@ -15,6 +16,22 @@
 {% block head_css %}
 <link rel="stylesheet" href="{{ STATIC_URL }}css/txtocracy.css" />    
 {% endblock %}
+
+{% block head_js %}
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-34314297-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+{% endblock head_js %}
 
 {% block header %}
 {% endblock header %}
