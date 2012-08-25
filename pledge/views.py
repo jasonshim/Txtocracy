@@ -1,8 +1,12 @@
+import re
+
 from django.shortcuts import render, redirect, get_object_or_404
 
 from django_twilio.client import twilio_client
+from django_twilio.decorators import twilio_view
+from twilio.twiml import Response
 
-from pledge.models import Election
+from pledge.models import Election, Pledge
 from pledge.forms import PledgeForm
 
 def home(request, template="home.html"):
@@ -14,6 +18,15 @@ def election(request, year, slug, template="election.html"):
                   template,
                   dict(election=election))
 
+def finalize_pledge(request, pledge, election):
+    pledge.ip = request.META["REMOTE_ADDR"]
+    pledge.election = election
+    pledge.save()
+    twilio_client.sms.messages.create(to=pledge.format_phone_number,
+                                      from_="+15194898975",
+                                      body=election.confirm_txt)
+    
+
 def pledge(request, year, slug, template="pledge.html"):
     election = get_object_or_404(Election, date__year=year, slug=slug)
     
@@ -21,12 +34,7 @@ def pledge(request, year, slug, template="pledge.html"):
         form = PledgeForm(request.POST)
         if form.is_valid():
             pledge = form.save(commit=False)
-            pledge.ip = request.META["REMOTE_ADDR"]
-            pledge.election = election
-            pledge.save()
-            twilio_client.sms.messages.create(to=pledge.format_phone_number,
-                                              from_="+15194898975",
-                                              body=election.confirm_txt)
+            finalize_pledge(request, pledge, election)
             return redirect("election", year, slug)
     else:
         form = PledgeForm()
@@ -35,3 +43,26 @@ def pledge(request, year, slug, template="pledge.html"):
                   template,
                   dict(election=election,
                        form=form))
+
+phone_re = re.compile("\+1(\d{3})(\d{7})")
+
+default_year = 2012
+default_slug = "ontario"
+
+@twilio_view
+def register_via_sms(request):
+    election = get_object_or_404(Election, date__year=default_year, slug=default_slug)
+    r = Response()
+    phone_number = request.POST.get("From", None)
+    if phone_number is None:
+        return r
+    
+    result = phone_re.match(phone_number)
+    if result is None:
+        return r
+    
+    areacode, phone_number = result.groups()
+    name = request.POST.get("Body", "Joe Public")
+    pledge = Pledge(areacode=areacode, phone_number=phone_number, name=name)
+    finalize_pledge(request, pledge, election)
+    return r
