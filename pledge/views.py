@@ -63,6 +63,10 @@ def register_via_sms(request):
     
     areacode, phone_number = result.groups()
     name = request.POST.get("Body", "Joe Public")
-    pledge = Pledge(areacode=areacode, phone_number=phone_number, name=name)
-    finalize_pledge(request, pledge, election)
+    try:
+        Pledge.objects.get(areacode=areacode, phone_number=phone_number, name=name)
+    except Pledge.DoesNotExist:
+        pledge = Pledge(areacode=areacode, phone_number=phone_number, name=name)
+        finalize_pledge(request, pledge, election)
+
     return r
