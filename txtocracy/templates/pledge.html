@@ -9,6 +9,7 @@
     <form method="post">
     {% csrf_token %}
     <h1>TXTOCRACY</h1>
+    <p>{{ election.name }} on {{ election.date|date }}</p>
     <dl>
         <dt>Name</dt>
         <dd>

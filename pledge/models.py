@@ -24,6 +24,8 @@ class Pledge(models.Model):
     uuid = models.CharField(max_length=128, blank=True)
     ip = models.IPAddressField()
     
+    created = models.DateTimeField(auto_now_add=True)
+    
     @property
     def format_phone_number(self):
         return u"+1" + self.areacode + self.phone_number
