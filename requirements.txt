@@ -4,6 +4,7 @@ South==0.7.3
 -e hg+https://amjoconn@bitbucket.org/wildernesslabs/viscountrapid#egg=viscountrapid
 raven
 markdown
+django-twilio==0.2
 
 boto==2.2.2
 django-ses==0.4.1

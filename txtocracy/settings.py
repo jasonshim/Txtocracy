@@ -124,6 +124,7 @@ INSTALLED_APPS = (
     'robots',
     'raven.contrib.django',
     'south',
+    'django_twilio',
     
     'txtocracy',
     'pledge'

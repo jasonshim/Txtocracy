@@ -6,6 +6,8 @@ class Election(models.Model):
     slug = models.CharField(max_length=140, help_text="this will part of the url.")
     date = models.DateField()
     
+    confirm_txt = models.CharField(max_length=160, help_text="This message will be sent to users after they pledge", default="Thanks for pledging to vote.")
+    
     information = models.TextField(blank=True, null=True, help_text="Basis of an informational page about the election in markdown.")
     
     def __unicode__(self):
@@ -21,6 +23,10 @@ class Pledge(models.Model):
     
     uuid = models.CharField(max_length=128, blank=True)
     ip = models.IPAddressField()
+    
+    @property
+    def format_phone_number(self):
+        return u"+1" + self.areacode + self.phone_number
     
     def save(self, *args, **kwargs):
         if self.uuid is None or self.uuid == "":

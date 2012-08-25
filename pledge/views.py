@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 
+from django_twilio.client import twilio_client
+
 from pledge.models import Election
 from pledge.forms import PledgeForm
 
@@ -22,6 +24,9 @@ def pledge(request, year, slug, template="pledge.html"):
             pledge.ip = request.META["REMOTE_ADDR"]
             pledge.election = election
             pledge.save()
+            twilio_client.sms.messages.create(to=pledge.format_phone_number,
+                                              from_="+15194898975",
+                                              body=election.confirm_txt)
             return redirect("election", year, slug)
     else:
         form = PledgeForm()
