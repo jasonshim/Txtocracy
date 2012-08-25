@@ -55,7 +55,7 @@ body {
 }
 
 #main {
-    margin-top: 75px;
+    /*margin-top: 75px;*/
 }
 
 .container_16 {
@@ -124,16 +124,33 @@ input[type=text], input[type=tel], input[type=submit] {
   clear: both;
 }
 
+html, body, div#container { height: 100%; }
+
+div.exclude_footer {
+    min-height: 100%;
+    margin: 0 auto -130px; /* the bottom margin is the negative value of the footer's height */
+}
+
+div#main {
+    padding-bottom: 8em;
+    padding-top: 75px;
+} 
+
 footer {
+    position: relative;
     background-color: #00b245;
-    margin-top: 50px;
-    padding: 25px;
+    height: 130px;
     text-align: center;
     color: white;
 }
 
+footer > div {
+    padding-top: 25px;
+}
+
 footer p {
     font: 30px 'BebasNeueRegular', Arial, sans-serif;
+    margin: 0px;
 }
 
 footer p.signed {
