@@ -19,12 +19,14 @@ def election(request, year, slug, template="election.html"):
                   dict(election=election))
 
 def finalize_pledge(request, pledge, election):
-    pledge.ip = request.META["REMOTE_ADDR"]
-    pledge.election = election
-    pledge.save()
-    twilio_client.sms.messages.create(to=pledge.format_phone_number,
-                                      from_="+15194898975",
-                                      body=election.confirm_txt)
+    if not Pledge.objects.filter(areacode=pledge.areacode, phone_number=pledge.phone_number).exists():
+        pledge.ip = request.META["REMOTE_ADDR"]
+        pledge.election = election
+        pledge.save()
+        twilio_client.sms.messages.create(to=pledge.format_phone_number,
+                                          from_="+15194898975",
+                                          body=election.confirm_txt)
+    # else we already know about the number, so no re-pledging.
     
 
 def pledge(request, year, slug, template="pledge.html"):
@@ -63,10 +65,6 @@ def register_via_sms(request):
     
     areacode, phone_number = result.groups()
     name = request.POST.get("Body", "Joe Public")
-    try:
-        Pledge.objects.get(areacode=areacode, phone_number=phone_number, name=name)
-    except Pledge.DoesNotExist:
-        pledge = Pledge(areacode=areacode, phone_number=phone_number, name=name)
-        finalize_pledge(request, pledge, election)
+    finalize_pledge(request, pledge, election)
 
     return r
