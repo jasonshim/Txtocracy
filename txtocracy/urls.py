@@ -5,5 +5,6 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     url(r'^', include('pledge.urls')),
+    (r'^robots\.txt$', include('robots.urls')),
     url(r'^txtadmin/', include(admin.site.urls)),
 )
