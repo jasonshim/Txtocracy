@@ -107,10 +107,6 @@ dd {
     margin-left: 60px;
 }
 
-div.fb-like {
-    display: inline;
-}
-
 input[type=text], input[type=tel], input[type=submit] {
     font-weight: 900;
     font-size: 12pt;

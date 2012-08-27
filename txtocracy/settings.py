@@ -152,6 +152,11 @@ LOGGING = {
             'level': 'ERROR',
             'filters': ['require_debug_false'],
             'class': 'django.utils.log.AdminEmailHandler'
+        },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose'
         }
     },
     'loggers': {
@@ -160,6 +165,11 @@ LOGGING = {
             'level': 'ERROR',
             'propagate': True,
         },
+        'debug': {
+            'level': 'DEBUG',
+            'handlers': ['console'],
+            'propagate': False,
+        }
     }
 }
 

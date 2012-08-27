@@ -31,7 +31,7 @@ def finalize_pledge(request, pledge_, election):
         send_mail("Pledge by %s" % pledge_.name,
                   "Hey\n\nThere is a new pledge in the system by %s.\n\nYou might want to moderate it.\n\nThe system" % pledge_.name,
                   "info@txtocracy.com",
-                  ["amjoconn@gmail.com"],
+                  ["amjoconn@gmail.com", "jason@jasonshim.net"],
                   fail_silently=True)
         return True
     else:
@@ -78,9 +78,10 @@ def register_via_sms(request):
     name = request.POST.get("Body", "Joe Public")
     pledge_ = Pledge(areacode=areacode, phone_number=phone_number, name=name)
     new = finalize_pledge(request, pledge_, election)
-    if new == False:
-        twilio_client.sms.messages.create(to=pledge_.format_phone_number,
-                                          from_="+15194898975",
-                                          body="You have already pledged. Thanks!")
+    #TODO why doesn't one txt in lead to two POSTs to our view?
+    #if new == False:
+    #    twilio_client.sms.messages.create(to=pledge_.format_phone_number,
+    #                                      from_="+15194898975",
+    #                                      body="You have already pledged. Thanks!")
 
     return r
