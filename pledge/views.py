@@ -9,7 +9,7 @@ from django_twilio.client import twilio_client
 from django_twilio.decorators import twilio_view
 from twilio.twiml import Response
 
-from pledge.models import Election, Pledge
+from pledge.models import Election, Pledge, SMS
 from pledge.forms import PledgeForm
 
 logger = logging.getLogger("debug")
@@ -67,10 +67,20 @@ default_slug = "ontario"
 
 @twilio_view
 def register_via_sms(request):
-    logger.debug("Got a sms request. %s" % unicode(request.POST))
     election = get_object_or_404(Election, date__year=default_year, slug=default_slug)
     r = Response()
-    r.redirect("http://txtocracy.com/")
+    
+    sms_id = request.POST.get("SmsMessageSid", None)
+    if sms_id is None:
+        return r
+    
+    try:
+        message = SMS.objects.get(sms_message_id=sms_id)
+        return r
+    except SMS.DoesNotExist:
+        message = SMS(sms_message_id=sms_id)
+        message.save()
+    
     phone_number = request.POST.get("From", None)
     if phone_number is None:
         return r
@@ -83,10 +93,10 @@ def register_via_sms(request):
     name = request.POST.get("Body", "Joe Public")
     pledge_ = Pledge(areacode=areacode, phone_number=phone_number, name=name)
     new = finalize_pledge(request, pledge_, election)
-    #TODO why doesn't one txt in lead to two POSTs to our view?
-    #if new == False:
-    #    twilio_client.sms.messages.create(to=pledge_.format_phone_number,
-    #                                      from_="+15194898975",
-    #                                      body="You have already pledged. Thanks!")
+    
+    if new == False:
+        twilio_client.sms.messages.create(to=pledge_.format_phone_number,
+                                          from_="+15194898975",
+                                          body="You have already pledged. Thanks!")
 
     return r

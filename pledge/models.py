@@ -38,3 +38,7 @@ class Pledge(models.Model):
     
     def __unicode__(self):
         return self.name
+    
+#Twilio sucks
+class SMS(models.Model):
+    sms_message_sid = models.CharField(max_length=60)
