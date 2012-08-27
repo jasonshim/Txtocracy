@@ -70,6 +70,7 @@ def register_via_sms(request):
     logger.debug("Got a sms request. %s" % unicode(request.POST))
     election = get_object_or_404(Election, date__year=default_year, slug=default_slug)
     r = Response()
+    r.redirect("http://txtocracy.com/")
     phone_number = request.POST.get("From", None)
     if phone_number is None:
         return r
