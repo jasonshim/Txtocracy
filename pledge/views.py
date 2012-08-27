@@ -75,10 +75,10 @@ def register_via_sms(request):
         return r
     
     try:
-        message = SMS.objects.get(sms_message_id=sms_id)
+        message = SMS.objects.get(sms_message_sid=sms_id)
         return r
     except SMS.DoesNotExist:
-        message = SMS(sms_message_id=sms_id)
+        message = SMS(sms_message_sid=sms_id)
         message.save()
     
     phone_number = request.POST.get("From", None)
