@@ -1,6 +1,8 @@
 import re
 
 from django.shortcuts import render, redirect, get_object_or_404
+from django.core.mail import send_mail
+from django.contrib import messages
 
 from django_twilio.client import twilio_client
 from django_twilio.decorators import twilio_view
@@ -26,7 +28,14 @@ def finalize_pledge(request, pledge_, election):
         twilio_client.sms.messages.create(to=pledge_.format_phone_number,
                                           from_="+15194898975",
                                           body=election.confirm_txt)
-    # else we already know about the number, so no re-pledging.
+        send_mail("Pledge by %s" % pledge_.name,
+                  "Hey\n\nThere is a new pledge in the system by %s.\n\nYou might want to moderate it.\n\nThe system" % pledge_.name,
+                  "info@txtocracy.com",
+                  ["amjoconn@gmail.com"],
+                  fail_silently=True)
+        return True
+    else:
+        return False
     
 
 def pledge(request, year, slug, template="pledge.html"):
@@ -36,7 +45,9 @@ def pledge(request, year, slug, template="pledge.html"):
         form = PledgeForm(request.POST)
         if form.is_valid():
             pledge_ = form.save(commit=False)
-            finalize_pledge(request, pledge_, election)
+            new = finalize_pledge(request, pledge_, election)
+            if new == False:
+                messages.info(request, "According to our recrods you have already pledged. Thanks!")
             return redirect("election", year, slug)
     else:
         form = PledgeForm()
@@ -66,6 +77,10 @@ def register_via_sms(request):
     areacode, phone_number = result.groups()
     name = request.POST.get("Body", "Joe Public")
     pledge_ = Pledge(areacode=areacode, phone_number=phone_number, name=name)
-    finalize_pledge(request, pledge_, election)
+    new = finalize_pledge(request, pledge_, election)
+    if new == False:
+        twilio_client.sms.messages.create(to=pledge_.format_phone_number,
+                                          from_="+15194898975",
+                                          body="You have already pledged. Thanks!")
 
     return r

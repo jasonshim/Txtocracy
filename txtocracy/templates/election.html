@@ -3,6 +3,13 @@
 {% load markup %}
 
 {% block contents %}
+
+{% if messages %}
+{% for message in messages %}
+<p>{{ message }}</p>
+{% endfor %}
+{% endif %}
+
 {{ election.information|markdown }}
 <p style="text-align: center">
     <span class='st_facebook_large' displayText='Facebook'></span>

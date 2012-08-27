@@ -19,6 +19,7 @@ class Pledge(models.Model):
     areacode = models.CharField(max_length=3)
     phone_number = models.CharField(max_length=7)
     
+    exclude = models.BooleanField(default=False, help_text="Check to never show this pledge on the website.")
     voted = models.BooleanField(default=False)
     
     uuid = models.CharField(max_length=128, blank=True)
