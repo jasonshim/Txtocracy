@@ -1,4 +1,5 @@
 import re
+import logging
 
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.mail import send_mail
@@ -10,6 +11,8 @@ from twilio.twiml import Response
 
 from pledge.models import Election, Pledge
 from pledge.forms import PledgeForm
+
+logger = logging.getLogger("debug")
 
 def home(request, template="home.html"):
     return redirect("pledge", 2012, "ontario")
@@ -64,6 +67,7 @@ default_slug = "ontario"
 
 @twilio_view
 def register_via_sms(request):
+    logger.debug("Got a sms request. %s" % unicode(request.POST))
     election = get_object_or_404(Election, date__year=default_year, slug=default_slug)
     r = Response()
     phone_number = request.POST.get("From", None)
