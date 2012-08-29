@@ -9,5 +9,6 @@ class StatusInline(admin.TabularInline):
 class MessageAdmin(admin.ModelAdmin):
     list_display = ("name", "sent", "time_sent", "created", "updated")
     inlines = [StatusInline]
+    filter_horizontal = ("custom",)
 
 admin.site.register(Message, MessageAdmin)
