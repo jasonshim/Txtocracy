@@ -8,8 +8,9 @@
 <div class="pledge">
     <form method="post">
     {% csrf_token %}
-    <h1>TXTOCRACY</h1>
-    <p>{{ election.name }} on {{ election.date|date }}</p>
+    <h1>Remind Me to Vote</h1>
+    <p>in the {{ election.name }} on {{ election.date|date }}</p>
+    <p></p>
     <dl>
         <dt>Name</dt>
         <dd>
@@ -27,10 +28,11 @@
     </dl>
     <dl>
         <dt></dt>
-        <dd><input class="btn btn-success btn-large" style="width: 175px" type="submit" value="Pledge to Vote"/></dd>
+        <dd><input class="btn btn-success btn-large" style="width: 185px" type="submit" value="Remind Me to Vote"/></dd>
     </dl>
     
-    <p>Once you pledge, we'll help you keep your promise by sending you SMS reminders for <a href="/about/#sms">free</a>.</p>
+    <p>We'll help you by sending you <a href="/about/#sms">free</a> SMS reminders. We won't share your information and after the election, we will delete your number.</p>
+    <p>Have any questions? <a href="mailto:jason@txtocracy.com">Contact Us</a></p>
     <p><a href="/about/">Read about</a> Txtocracy.</p>
     
     <p style="text-align: center">
@@ -45,10 +47,3 @@
 
 <div class="clearfix"></div>
 {% endblock contents %}
-
-{% block footer %}
-<div class="grid_4 alpha">
-    <p>"I, THE UNDERSIGNED, PLEDGE TO VOTE ON SEPTEMBER 6TH, 2012."</p>
-    <p class="signed">- You</p>
-</div>
-{% endblock footer %}
