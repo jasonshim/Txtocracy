@@ -129,7 +129,8 @@ INSTALLED_APPS = (
     'django_twilio',
     
     'txtocracy',
-    'pledge'
+    'pledge',
+    'messages'
 )
 
 DEVELOPMENT = False
