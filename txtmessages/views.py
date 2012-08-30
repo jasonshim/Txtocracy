@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django_twilio.decorators import twilio_view
 from twilio.twiml import Response
 
-from messages.models import Status
+from txtmessages.models import Status
 
 @twilio_view
 def sms_status_update(request):

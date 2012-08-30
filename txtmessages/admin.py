@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from messages.models import Message, Status 
+from txtmessages.models import Message, Status 
 
 class StatusInline(admin.TabularInline):
     model = Status
