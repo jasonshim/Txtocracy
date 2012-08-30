@@ -36,7 +36,7 @@ class Message(models.Model):
             self.sent = True
             self.time_sent = datetime.datetime.now()
             self.save()
-            import pdb; pdb.set_trace()
+            
             to_list = self.get_to_list()
             
             for pledge_ in to_list:
