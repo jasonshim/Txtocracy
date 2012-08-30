@@ -1,6 +1,7 @@
 import datetime
 
 from django.db import models
+from django.contrib.sites.models import Site
 from django.core.urlresolvers import reverse
 
 from django_twilio.client import twilio_client
@@ -45,7 +46,7 @@ class Message(models.Model):
                 resp = twilio_client.sms.messages.create(to=pledge_.format_phone_number,
                                                          from_="+15194898975",
                                                          body=self.message,
-                                                         status_callback=reverse('sms_status_update'))
+                                                         status_callback="http://%s%s" % (Site.objects.get_current().domain, reverse('sms_status_update')))
                 new_status = Status(message=self,
                                    receiver=pledge_,
                                    sid=resp.sid)
