@@ -130,7 +130,7 @@ INSTALLED_APPS = (
     
     'txtocracy',
     'pledge',
-    'messages'
+    'txtmessages'
 )
 
 DEVELOPMENT = False
