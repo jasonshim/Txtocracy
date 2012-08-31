@@ -1,12 +1,16 @@
 import datetime
+import logging
 
 from django.db import models
 from django.contrib.sites.models import Site
 from django.core.urlresolvers import reverse
 
 from django_twilio.client import twilio_client
+from twilio import TwilioRestException
 
 from pledge.models import Pledge
+
+logger = logging.getLogger()
 
 class Message(models.Model):
     """
@@ -43,10 +47,14 @@ class Message(models.Model):
             for pledge_ in to_list:
                 # We are going to hit twilio rapidly, but it will queue message
                 # and send one a second
-                resp = twilio_client.sms.messages.create(to=pledge_.format_phone_number,
-                                                         from_="+15194898975",
-                                                         body=self.message,
-                                                         status_callback="http://%s%s" % (Site.objects.get_current().domain, reverse('sms_status_update')))
+                try:
+                    resp = twilio_client.sms.messages.create(to=pledge_.format_phone_number,
+                                                             from_="+15194898975",
+                                                             body=self.message,
+                                                             status_callback="http://%s%s" % (Site.objects.get_current().domain, reverse('sms_status_update')))
+                except TwilioRestException:
+                    logger.error('Twilio Rest Exception while sending messages', exc_info=True)
+                    
                 new_status = Status(message=self,
                                    receiver=pledge_,
                                    sid=resp.sid)

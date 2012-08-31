@@ -8,11 +8,12 @@ from django.contrib import messages
 from django_twilio.client import twilio_client
 from django_twilio.decorators import twilio_view
 from twilio.twiml import Response
+from twilio import TwilioRestException
 
 from pledge.models import Election, Pledge, SMS
 from pledge.forms import PledgeForm
 
-logger = logging.getLogger("debug")
+logger = logging.getLogger()
 
 def home(request, template="home.html"):
     return redirect("pledge", 2012, "ontario")
@@ -28,9 +29,12 @@ def finalize_pledge(request, pledge_, election):
         pledge_.ip = request.META["REMOTE_ADDR"]
         pledge_.election = election
         pledge_.save()
-        twilio_client.sms.messages.create(to=pledge_.format_phone_number,
-                                          from_="+15194898975",
-                                          body=election.confirm_txt)
+        try:
+            twilio_client.sms.messages.create(to=pledge_.format_phone_number,
+                                              from_="+15194898975",
+                                              body=election.confirm_txt)
+        except TwilioRestException:
+            logger.error('Twilio Rest Exception while sending confirm message', exc_info=True)
         send_mail("Pledge by %s" % pledge_.name,
                   "Hey\n\nThere is a new pledge in the system by %s.\n\nYou might want to moderate it.\n\nThe system" % pledge_.name,
                   "info@txtocracy.com",
@@ -95,8 +99,11 @@ def register_via_sms(request):
     new = finalize_pledge(request, pledge_, election)
     
     if new == False:
-        twilio_client.sms.messages.create(to=pledge_.format_phone_number,
-                                          from_="+15194898975",
-                                          body="You have already pledged. Thanks!")
+        try:
+            twilio_client.sms.messages.create(to=pledge_.format_phone_number,
+                                              from_="+15194898975",
+                                              body="You have already pledged. Thanks!")
+        except TwilioRestException:
+            logger.error('Twilio Rest Exception while sending already pledged message', exc_info=True)
 
     return r
