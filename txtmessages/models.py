@@ -53,11 +53,19 @@ class Message(models.Model):
                                                              body=self.message,
                                                              status_callback="http://%s%s" % (Site.objects.get_current().domain, reverse('sms_status_update')))
                 except TwilioRestException:
+                    resp = None
                     logger.error('Twilio Rest Exception while sending messages', exc_info=True)
                     
-                new_status = Status(message=self,
-                                   receiver=pledge_,
-                                   sid=resp.sid)
+                if resp is not None:
+                    new_status = Status(message=self,
+                                       receiver=pledge_,
+                                       sid=resp.sid)
+                else:
+                    new_status = Status(message=self,
+                                       receiver=pledge_,
+                                       sid='##############',
+                                       status="Twilio Exception")
+                
                 new_status.save()
             
     def get_to_list(self):
