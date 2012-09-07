@@ -1,5 +1,14 @@
 import uuid
+import logging
+
 from django.db import models
+from django.db.models.signals import pre_delete
+from django.dispatch import receiver
+
+from django_twilio.client import twilio_client
+from twilio import TwilioRestException
+
+logger = logging.getLogger()
 
 class Election(models.Model):
     name = models.CharField(max_length=256)
@@ -42,3 +51,14 @@ class Pledge(models.Model):
 #Twilio sucks
 class SMS(models.Model):
     sms_message_sid = models.CharField(max_length=60)
+    
+delete_msg = "TXTOCRACY: Your information has been removed from our system. Thank you for signing up for TXTOCRACY!"
+    
+@receiver(pre_delete, sender=Pledge)
+def handle_pledge_delete(sender, instance, **kwargs):
+    try:
+        twilio_client.sms.messages.create(to=instance.format_phone_number,
+                                          from_="+15194898975",
+                                          body=delete_msg)
+    except TwilioRestException:
+        logger.error('Twilio Rest Exception while sending a deletion message', exc_info=True)
