@@ -1,4 +1,4 @@
-django==1.11.28
+django==2.2.24
 django-robots==0.8.0
 South==0.7.6
 -e hg+https://amjoconn@bitbucket.org/wildernesslabs/viscountrapid#egg=viscountrapid
